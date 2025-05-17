@@ -40,10 +40,10 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-//test {
-//    useJUnitPlatform()
-//    systemProperty "file.encoding", "UTF-8"  // Добавил для корректной работы с кириллицей
-//}
+test {
+    useJUnitPlatform()
+    systemProperty "file.encoding", "UTF-8"  // Добавил для корректной работы с кириллицей
+}
 
 task simple_test(type: Test) {
     useJUnitPlatform {
