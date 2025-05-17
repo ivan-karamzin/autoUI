@@ -1,21 +1,52 @@
 plugins {
     id 'java-library'
+    id 'io.qameta.allure' version '2.12.0'  // Убрал скобки для consistency
+}
+
+allure {
+    version = '2.24.0'  // Изменил на стабильную версию (было 2.30.0)
+
+    adapter {
+        autoconfigure = true
+        aspectjWeaver = true
+
+        frameworks {
+            junit5 {
+                adapterVersion = '2.24.0'  // Явно указал версию адаптера
+                enabled = true
+            }
+        }
+    }
 }
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.qameta.io/artifactory/allure' }  // Добавил репозиторий Allure
 }
 
 dependencies {
     testImplementation (
-            "com.codeborne:selenide:6.19.1",
-            "org.junit.jupiter:junit-jupiter:5.9.3")
+            "com.codeborne:selenide:7.9.1",
+            "org.junit.jupiter:junit-jupiter:5.9.3",
+            "org.slf4j:slf4j-simple:2.0.6",
+            "com.github.javafaker:javafaker:1.0.2",
+            "com.codeborne:pdf-test:1.9.2",
+            "io.qameta.allure:allure-selenide:2.24.0",  // Синхронизировал версию с allure-junit5
+            "io.qameta.allure:allure-junit5:2.24.0"     // Явно добавил недостающую зависимость
+    )
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-test {
-    useJUnitPlatform()
+//test {
+//    useJUnitPlatform()
+//    systemProperty "file.encoding", "UTF-8"  // Добавил для корректной работы с кириллицей
+//}
+
+task simple_test(type: Test) {
+    useJUnitPlatform {
+        includeTags("simple")
+    }
 }
